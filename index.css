@@ -1,3 +1,10 @@
+html, body {
+    height: 100%; 
+    margin: 0;
+    padding: 0;
+    background-color: black;
+}
+
 .mainTitle {
     justify-self: center;
     padding: 5%;
@@ -8,7 +15,7 @@
                 rgb(0, 255,255) 21.4%, cyan 28.56%, blue 35.7%, magenta 42.84%, red 50%);
     background-size: 600vw 600vw;
     -webkit-text-fill-color: transparent;
-    -webkit-background-clip: text;
+    -webkit-background-clip:text;
     animation: slide 9s linear infinite forwards;
 }
 @keyframes slide {
@@ -18,4 +25,53 @@
 
 body {
     background-color: black;
+}
+.loadingScreen {
+    display:flex;
+    flex-direction: row;
+    height: 100%;
+}
+.border{
+    background: repeating-linear-gradient(-45deg, red 0%, yellow 7.14%, green 14.28%, 
+                rgb(0, 255,255) 21.4%, cyan 28.56%, blue 35.7%, magenta 42.84%, red 50%);
+    background-size: 600vw 600vw;
+    animation: slide 9s linear infinite forwards;
+}
+#top-left{
+    border-radius: 10%;
+    width:1%;
+    height:30%;
+}
+#bottom-left{
+    border-radius: 10%;
+    width:1%;
+    height:30%;
+}
+.goal{
+    height:20%;
+}
+#left {
+    display: flex;                  
+    margin: auto;
+    height: 100%;
+    flex-direction: column;
+    justify-content: space-evenly;
+}
+#right{
+    display: flex;                  
+    margin: auto;
+    height: 100%;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items:end;
+}
+#top-right{
+    border-radius: 10%;
+    width:1%;
+    height:30%;
+}
+#bottom-right{
+    border-radius: 10%;
+    width:1%;
+    height:30%;
 }
