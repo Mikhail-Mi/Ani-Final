@@ -1,3 +1,4 @@
+
 document.addEventListener('DOMContentLoaded', () => {
     const backButton = document.querySelector('.back-button');
     const startButton = document.querySelector('.start-button');
@@ -12,11 +13,11 @@ document.addEventListener('DOMContentLoaded', () => {
   
     });
 
-    let player1Color = document.getElementById('player1-color');
-    let goalsToWin = document.getElementById('goals-to-win');
-    let timeLeft = document.getElementById('time-left');
-    let map = document.getElementById('map');
-    let player2Color = document.getElementById('player2-color');
+    const player1Color = document.getElementById('player1-color');
+    const goalsToWin = document.getElementById('goals-to-win');
+    const timeLeft = document.getElementById('time-left');
+    const map = document.getElementById('map');
+    const player2Color = document.getElementById('player2-color');
 
     startButton.addEventListener('click', () => {
         const settings = {
@@ -31,6 +32,9 @@ document.addEventListener('DOMContentLoaded', () => {
         console.log('Start button clicked with settings:', settings);
     });
 });
+export function getGoalsToWin(){
+    return document.getElementById('goals-to-win');
+}
 
 
 //set color gradients 
