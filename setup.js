@@ -44,7 +44,7 @@ const container = document.querySelector('.container');
 const player1ColorSelect = document.getElementById('player1-color');
 const player2ColorSelect = document.getElementById('player2-color');
 
-function updateBorderGradient() {
+export function updateBorderGradient() {
     const color1 = player1ColorSelect.value;
     const color2 = player2ColorSelect.value;
     container.style.borderImage = `linear-gradient(to right, ${color1}, ${color2}) 1`;

@@ -1,0 +1,54 @@
+body {
+    margin: 0;
+    padding: 0;
+    background-color: #000;
+    color: #fff;
+    font-family: 'Press Start 2P', cursive;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    overflow: hidden;
+}
+
+
+.container {
+    border: 5px solid;
+    border-image: linear-gradient(to bottom right, #00ffff, #ff00ff) 1;
+    padding: 20px;
+    box-shadow: 0 0 20px rgba(0, 255, 255, 0.5), 0 0 20px rgba(255, 0, 255, 0.5);
+    text-align: center;
+    height:80vh;
+    width:80vw;
+}
+.player {
+  position: absolute;
+  width: 50px;
+  height: 50px;
+  background: red;
+}
+.ball {
+    position: absolute;
+    width: 4.3vw;
+    height: 4.3vw;
+    border-radius: 50%;
+    background: white;
+}
+
+.player1 {
+    background-color: cyan;
+    left: 15%;
+    top: 30%;
+}
+
+.player2 {
+    background-color: pink;
+    right: 15%;
+    top: 30%;
+}
+
+.game-ball {
+    background-color: yellow;
+    left: 48%;
+    top: 30%;
+}
