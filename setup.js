@@ -8,22 +8,15 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     startButton.addEventListener('click', () => {
-        console.log('Start button clicked');
+        window.location.href = 'game.html';
   
     });
 
-    const player1Color = document.getElementById('player1-color');
-    const player1Cpu = document.getElementById('player1-cpu');
-    const goalsToWin = document.getElementById('goals-to-win');
-    const timeLeft = document.getElementById('time-left');
-    const map = document.getElementById('map');
-    const player2Color = document.getElementById('player2-color');
-    const player2Cpu = document.getElementById('player2-cpu');
-
-    backButton.addEventListener('click', () => {
-        console.log('Back button clicked');
-        window.location.href = 'index.html';
-    });
+    let player1Color = document.getElementById('player1-color');
+    let goalsToWin = document.getElementById('goals-to-win');
+    let timeLeft = document.getElementById('time-left');
+    let map = document.getElementById('map');
+    let player2Color = document.getElementById('player2-color');
 
     startButton.addEventListener('click', () => {
         const settings = {
@@ -38,3 +31,26 @@ document.addEventListener('DOMContentLoaded', () => {
         console.log('Start button clicked with settings:', settings);
     });
 });
+
+
+//set color gradients 
+const start = document.querySelector('.start');
+const match = document.querySelector('.match');
+const container = document.querySelector('.container');
+const player1ColorSelect = document.getElementById('player1-color');
+const player2ColorSelect = document.getElementById('player2-color');
+
+function updateBorderGradient() {
+    const color1 = player1ColorSelect.value;
+    const color2 = player2ColorSelect.value;
+    container.style.borderImage = `linear-gradient(to right, ${color1}, ${color2}) 1`;
+    start.style.color = color1;
+    match.style.color = color2;
+}
+
+// Listen for changes
+player1ColorSelect.addEventListener('change', updateBorderGradient);
+player2ColorSelect.addEventListener('change', updateBorderGradient);
+
+// Set initial gradient when page loads
+window.addEventListener('DOMContentLoaded', updateBorderGradient);
