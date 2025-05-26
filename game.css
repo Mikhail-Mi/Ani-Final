@@ -52,3 +52,67 @@ body {
     left: 48%;
     top: 30%;
 }
+
+.wall {
+  position: absolute;
+  background-color: transparent; /* Invisible but collidable */
+  z-index: 1;
+}
+
+/* Position each wall */
+#leftWall {
+  top: 0;
+  left: 6.5vw;
+  width: 2vw;
+  height: 100%;
+}
+
+#rightWall {
+  top: 0;
+  right: 6.5vw;
+  width: 2vw;
+  height: 100%;
+}
+
+#topWall {
+  top: 4.5vh;
+  left: 0;
+  width: 100%;
+  height: 2vh;
+}
+
+#bottomWall {
+  bottom: 4.5vh;
+  left: 0;
+  width: 100%;
+  height: 2vh;
+}
+
+/* Goal zones that overlap left/right walls */
+.goal {
+  position: absolute;
+  background-color: transparent; /* Still invisible but usable for logic */
+  z-index: 2;
+}
+
+/* Place goals in the center vertically inside walls */
+#goalLeft {
+  left: 6.5vw;
+  top: 40%;
+  width: 2vw;
+  height: 20%;
+}
+
+#goalRight {
+  right: 6.5vw;
+  top: 40%;
+  width: 2vw;
+  height: 20%;
+}
+.wall {
+  background-color: rgba(255, 0, 0, 0.3); /* semi-transparent red */
+}
+
+.goal {
+  background-color: rgba(0, 255, 0, 0.3); /* semi-transparent green */
+}
