@@ -29,8 +29,8 @@ body {
 }
 .ball {
     position: absolute;
-    width: 4.3vw;
-    height: 4.3vw;
+    width: 3.8vw;
+    height: 3.8vw;
     border-radius: 50%;
     background: white;
 }

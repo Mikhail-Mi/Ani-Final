@@ -78,8 +78,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
 
-const friction = 0.2; // super low friction, slows down over a long time
-const acc = 0.3;
+const friction = 0.05; // super low friction, slows down over a long time
+const acc = 0.4;
+const vertAcc = 0.2;
 const gravity = 0.13; // Constant downward pull
 
 function movePlayers() {
@@ -100,9 +101,9 @@ function movePlayers() {
 
     // PLAYER 1 - Y Axis
     if (keys['w']) {
-        speed1Y -= acc;
+        speed1Y -= vertAcc;
     } else if (keys['s']) {
-        speed1Y += acc;
+        speed1Y += vertAcc;
     }
     speed1Y += gravity;
 
@@ -123,9 +124,9 @@ function movePlayers() {
 
     // PLAYER 2 - Y Axis
     if (keys['arrowup']) {
-        speed2Y -= acc;
+        speed2Y -= vertAcc;
     } else if (keys['arrowdown']) {
-        speed2Y += acc;
+        speed2Y += vertAcc;
     }
     speed2Y += gravity;
 
