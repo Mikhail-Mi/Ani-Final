@@ -78,9 +78,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
 
-const friction = 0.25; // super low friction, slows down over a long time
+const friction = 0.2; // super low friction, slows down over a long time
 const acc = 0.3;
-const gravity = 0.14; // Constant downward pull
+const gravity = 0.13; // Constant downward pull
 
 function movePlayers() {
     // PLAYER 1 - X Axis
