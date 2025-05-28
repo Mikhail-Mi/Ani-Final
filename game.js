@@ -39,6 +39,7 @@ function resetGame() {
     //styles
     player1.style.backgroundColor = settings.player1Color;
     player2.style.backgroundColor = settings.player2Color;
+    container.style.borderImage = `linear-gradient(to right, ${settings.player1Color}, ${settings.player2Color}) 1`;
 
     // Reset player positions
     player1.style.left = '250px';
