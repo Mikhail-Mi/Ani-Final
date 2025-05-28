@@ -185,7 +185,7 @@ function movePlayers() {
         if (playerRect.top <= topWall.bottom) {
             bounce.y = Math.abs(bounce.y)*((Math.random()*0.4)+0.65); // bounce down
             player.style.top += 1 + 'px';
-            player.style.height = -shrunkSize + "px";
+            player.style.height = shrunkSize + "px";
             setTimeout(() => {
                 player.style.height = originalSize + "px";
             }, 50);
