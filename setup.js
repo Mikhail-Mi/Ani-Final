@@ -12,12 +12,10 @@ document.addEventListener('DOMContentLoaded', () => {
     startButton.addEventListener('click', () => {
     const settings = {
         player1Color: player1Color.value,
-        player1Cpu: player1Cpu.checked,
         goalsToWin: parseInt(goalsToWin.value, 10),
         timeLeft: parseInt(timeLeft.value, 10),
         map: map.value,
         player2Color: player2Color.value,
-        player2Cpu: player2Cpu.checked
     };
 
     localStorage.setItem('gameSettings', JSON.stringify(settings));

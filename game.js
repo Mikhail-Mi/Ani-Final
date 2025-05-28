@@ -1,6 +1,7 @@
 const maxSpeed = 10;
 
 const settings = JSON.parse(localStorage.getItem('gameSettings'));
+console.log(settings);
 
 // If no settings were saved (e.g., direct page access), fall back to defaults
 const player1Color = settings?.player1Color || 'red';
@@ -35,15 +36,19 @@ function resetGame() {
     const ballWidth = ball.offsetWidth;
     const ballHeight = ball.offsetHeight;
 
+    //styles
+    player1.style.backgroundColor = settings.player1Color;
+    player2.style.backgroundColor = settings.player2Color;
+
     // Reset player positions
-    player1.style.left = '50px';
+    player1.style.left = '250px';
     player1.style.top = (containerRect.height / 2 - playerHeight / 2) + 'px';
 
     player2.style.left = (containerRect.width - 50 - playerWidth) + 'px';
     player2.style.top = (containerRect.height / 2 - playerHeight / 2) + 'px';
 
     // Reset ball position (center)
-    ball.style.left = (containerRect.width / 2 - ballWidth / 2) + 'px';
+    ball.style.right = '250px';
     ball.style.top = (containerRect.height / 2 - ballHeight / 2) + 'px';
 }
 
@@ -193,7 +198,7 @@ function movePlayers() {
 
 
 
-// Fix comparison here
+
 function checkWin() {
     if (leftScore === getGoalsToWin()) {
         return "left-won";
