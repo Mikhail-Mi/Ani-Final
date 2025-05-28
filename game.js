@@ -158,28 +158,46 @@ function movePlayers() {
         const topWall = document.getElementById('topWall').getBoundingClientRect();
         const bottomWall = document.getElementById('bottomWall').getBoundingClientRect();
         const container = document.querySelector('.container').getBoundingClientRect();
+        const originalSize = parseFloat(getComputedStyle(player).width);
+        const shrunkSize = originalSize * 0.8;
 
         let bounce = { x: speedX, y: speedY };
 
         // Left wall
         if (playerRect.left <= leftWall.right) {
             bounce.x = Math.abs(bounce.x)*((Math.random()*0.4)+0.85); // bounce right
+            player.style.width = shrunkSize + "px";
+            setTimeout(() => {
+                player.style.width = originalSize + "px";
+            }, 50);
         }
 
         // Right wall
         if (playerRect.right >= rightWall.left) {
             bounce.x = -Math.abs(bounce.x)*((Math.random()*0.4)+0.85); // bounce left
+            player.style.width = shrunkSize + "px";
+            setTimeout(() => {
+                player.style.width = originalSize + "px";
+            }, 50);
         }
 
         // Top wall
         if (playerRect.top <= topWall.bottom) {
             bounce.y = Math.abs(bounce.y)*((Math.random()*0.4)+0.65); // bounce down
             player.style.top += 1 + 'px';
+            player.style.height = -shrunkSize + "px";
+            setTimeout(() => {
+                player.style.height = originalSize + "px";
+            }, 50);
         }
 
         // Bottom wall
         if (playerRect.bottom >= bottomWall.top) {
             bounce.y = -Math.abs(bounce.y)*((Math.random()*0.4)+0.85); // bounce up
+            player.style.height = shrunkSize + "px";
+            setTimeout(() => {
+                player.style.height = originalSize + "px";
+            }, 50);
         }
 
         return bounce;
