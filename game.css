@@ -23,14 +23,14 @@ body {
 }
 .player {
   position: absolute;
-  width: 50px;
-  height: 50px;
+  width: 4.5vw;
+  height: 4.5vw;
   background: red;
 }
 .ball {
     position: absolute;
-    width: 3.8vw;
-    height: 3.8vw;
+    width: 3.0vw;
+    height: 3.0vw;
     border-radius: 50%;
     background: white;
 }
@@ -49,7 +49,6 @@ body {
 
 .game-ball {
     background-color: yellow;
-    left: 48%;
     top: 30%;
 }
 
