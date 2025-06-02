@@ -310,10 +310,24 @@ function handleBallPlayerCollision(ball, player) {
         // Ball speed magnitude
         const speed = Math.sqrt(ballSpeedX * ballSpeedX + ballSpeedY * ballSpeedY) || 1;
 
+        //player speed magnitude 
+
         // Reflect the ball in the opposite direction (scaled slightly for variation)
         const speedMultiplier = (Math.random() * 0.4) + 0.85;
         ballSpeedX = dx * speed * speedMultiplier;
         ballSpeedY = dy * speed * speedMultiplier;
+
+        const speedMultiplier2 = (Math.random() * 0.4) + 0.85;
+        if(player === player1){
+            const pSpeed = Math.sqrt(speed1X * speed1X + speed1Y * speed1Y) || 1;
+            speed1X = -dx * pSpeed * speedMultiplier2;
+            speed1Y = -dy * pSpeed * speedMultiplier2;
+        }else{
+            const pSpeed = Math.sqrt(speed2X * speed2X + speed2Y * speed2Y) || 1;
+            speed2X = -dx * pSpeed * speedMultiplier2;
+            speed2Y = -dy * pSpeed * speedMultiplier2;
+        }
+        
 
         // Reposition the ball just outside the player to prevent sticking
         const overlapBuffer = 2;
