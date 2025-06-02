@@ -269,7 +269,7 @@ function movePlayers() {
 
         // Bottom wall
         if (ballRect.bottom >= bottomWall.top) {
-            bounce.y = -Math.abs(bounce.y)*((Math.random()*0.4)+0.65); // bounce up, reduced bounce height
+            bounce.y = -Math.abs(bounce.y)*((Math.random()*0.4)+0.85); // bounce up, reduced bounce height
             ball.style.top = bottomWall.top - ballRect.height - 1 + 'px'; // Adjust position to prevent sticking
             ball.style.height = shrunkSize + "px";
             setTimeout(() => {
@@ -317,7 +317,7 @@ function handleBallPlayerCollision(ball, player) {
         ballSpeedX = dx * speed * speedMultiplier;
         ballSpeedY = dy * speed * speedMultiplier;
 
-        const speedMultiplier2 = (Math.random() * 0.4) + 0.85;
+        const speedMultiplier2 = (Math.random() * 0.4) + 0.75;
         if(player === player1){
             const pSpeed = Math.sqrt(speed1X * speed1X + speed1Y * speed1Y) || 1;
             speed1X = -dx * pSpeed * speedMultiplier2;
