@@ -21,6 +21,7 @@ body {
     height:80vh;
     width:80vw;
 }
+
 .player {
   position: absolute;
   width: 4.5vw;
@@ -115,3 +116,5 @@ body {
 .goal {
   background-color: rgba(0, 255, 0, 0.3); /* semi-transparent green */
 }
+
+

@@ -1,106 +1,179 @@
-html, body {
-    height: 100%; 
-    margin: 0;
-    padding: 0;
-    background-color: black;
-}
-
-.mainTitle {
-    justify-self: center;
-    padding-top: 5%;
-    font-size: 4rem;
-    font-weight: bold;
-    color:white;
-    background: repeating-linear-gradient(-45deg, red 0%, yellow 7.14%, green 14.28%, 
-                rgb(0, 255,255) 21.4%, cyan 28.56%, blue 35.7%, magenta 42.84%, red 50%);
-    background-size: 600vw 600vw;
-    -webkit-text-fill-color: transparent;
-    -webkit-background-clip:text;
-    animation: slide 9s linear infinite forwards;
-}
-@keyframes slide {
-    0%{background-position-x: 0%;}
-    100%{background-position-x: 100%;}
-}
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
 
 body {
-    background-color: black;
-}
-.loadingScreen {
-    height: 100%;
-}
-.border{
-    background: repeating-linear-gradient(-45deg, red 0%, yellow 7.14%, green 14.28%, 
-                rgb(0, 255,255) 21.4%, cyan 28.56%, blue 35.7%, magenta 42.84%, red 50%);
-    background-size: 600vw 600vw;
-    animation: slide 9s linear infinite forwards;
-}
-.goal{
-    height:20%;
-}
-#left, #right {
+    margin: 0;
+    padding: 0;
+    background-color: #000;
+    color: #fff;
+    font-family: 'Press Start 2P', cursive;
     display: flex;
-    flex-direction: column;
-    justify-content: space-evenly;
-    height: 100%;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    overflow: hidden;
 }
 
-#top-left, #bottom-left, #top-right, #bottom-right {
-    border-radius: 10%;
-    width: 0.7vw;
-    height: 35%;
+
+.container {
+    border: 5px solid;
+    border-image: linear-gradient(to right, blue, red) 1;  
+    padding: 20px;
+    box-shadow: 0 0 20px rgba(0, 255, 255, 0.5), 0 0 20px rgba(255, 0, 255, 0.5);
+    text-align: center;
 }
-.field {
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.icon {
+    width: 40px;
+    height: 40px;
+    /* Placeholder for icons - will use background images or SVGs */
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.sound-icon {
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white"><path d="M3 9v6h4l5 5V4l-5 5H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.81 5 3.54 5 6.71s-2.11 5.9-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>');
+}
+
+.music-icon {
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white"><path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6zm-2 16c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2z"/></svg>');
+}
+
+.title {
+    font-size: 36px;
+    font-weight: bold;
+    flex-grow: 1;
+}
+
+.start {
+    color: blue;
+}
+
+.match {
+    color: red ;
+}
+
+.settings {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 40px;
+    width: 100%;
+}
+
+.player-settings, .game-settings {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.player-color, .goals-to-win, .time-left, .map, .is-cpu {
+    margin-bottom: 20px;
+    width: 100%;
+    text-align: left;
+}
+
+label {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 12px;
+    color: #aaa;
+}
+
+select, input[type="number"] {
+    background-color: #1a1a1a;
+    color: #fff;
+    border: 2px solid #555;
+    padding: 8px;
+    font-family: 'Press Start 2P', cursive;
+    font-size: 10px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+select {
+    background-image: url('data:image/svg+xml;utf8,<svg fill="%23fff" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>');
+    background-repeat: no-repeat;
+    background-position: right 8px center;
+    background-size: 12px auto;
+}
+
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+select {
+    appearance: none;
+    padding-right: 20px;
+    background-image: url('data:image/svg+xml;utf8,<svg fill="#fff" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>');
+    background-repeat: no-repeat;
+    background-position: right 5px top 50%;
+    background-size: 12px auto;
+}
+
+input[type="checkbox"] {
+    margin-right: 8px;
+    width: 16px;
+    height: 16px;
+    vertical-align: middle;
+}
+
+.is-cpu label {
+    display: inline-block;
+    vertical-align: middle;
+    margin-bottom: 0;
+}
+
+.footer {
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+}
+
+button {
+    background-color: transparent;
+    color: #fff;
+    border: 2px solid;
+    padding: 12px 24px;
+    font-family: 'Press Start 2P', cursive;
+    font-size: 14px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+button::before {
+    content: '';
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    color:transparent;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-
-    /* We control how close the side elements are with padding */
-    padding: 0 5%; /* left/right bars sit 5% away from the center (50% - 5%) */
-}
-#bottom{
-    width:84%;
-    height:0.7vw;
-    position: absolute;
-    bottom:2%;
-    left:8%;
-}
-#top{
-    width:84%;
-    height:0.7vw;
-    position: absolute;
-    top:2%;
-    left:8%;
-}
-a{
-    color:white;
-    text-decoration: none;
-}
-a:link {
-  color:white;
-    text-decoration: none;
+    background: linear-gradient(45deg, rgba(0, 255, 255, 0.3), rgba(255, 0, 255, 0.3));
+    z-index: -1;
+    opacity: 0;
+    transition: opacity 0.3s ease;
 }
 
-/* visited link */
-a:visited {
-  color:white;
-    text-decoration: none;
+button:hover::before {
+    opacity: 1;
 }
 
-/* mouse over link */
-a:hover {
-  color:black;
-    text-decoration: none;
+.back-button {
+    border-image: linear-gradient(to bottom right, #0000FF, #00ffff) 1;
+    box-shadow: 0 0 10px rgba(25, 0, 255, 0.5), 0 0 10px rgba(2, 249, 249, 0.849);
 }
 
-/* selected link */
-a:active {
-  color:black;
-    text-decoration: none;
+.start-button {
+    border-image: linear-gradient(to bottom right, #ff0000, #ff9100) 1;
+    box-shadow: 0 0 10px rgba(255, 119, 0, 0.5), 0 0 10px rgba(241, 233, 3, 0.5);
 }
