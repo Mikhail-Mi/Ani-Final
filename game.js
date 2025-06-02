@@ -49,7 +49,7 @@ function resetGame() {
     player2.style.top = (containerRect.height / 2 - playerHeight / 2) + 'px';
 
     // Reset ball position (center)
-    ball.style.right = '250px';
+    ball.style.left = (containerRect.width / 2 - ballWidth / 2) + 'px';
     ball.style.top = (containerRect.height / 2 - ballHeight / 2) + 'px';
 }
 
@@ -57,20 +57,26 @@ resetGame();
 let leftScore = 0;
 let rightScore = 0;
 
-
+let playerOriginalSize;
+let ballOriginalSize;
 
 document.addEventListener('DOMContentLoaded', function () {
     updateBorderGradient();
     resetGame();
     const player1 = document.getElementById('player1');
     const player2 = document.getElementById('player2');
+    const ball = document.getElementById('gameBall');
+
+    playerOriginalSize = parseFloat(getComputedStyle(player1).width);
+    ballOriginalSize = parseFloat(getComputedStyle(ball).width);
 
     //speed is positive when it either goes up for Y or right for X 
     let speed1X = 0;
     let speed2X = 0;
     let speed1Y = 0;
     let speed2Y = 0;
-    
+    let ballSpeedX = 0; // Ball starts with no horizontal speed
+    let ballSpeedY = 5; // Ball starts falling immediately
 
     const keys = {};
 
@@ -84,12 +90,16 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
 
-const friction = 0.05; // super low friction, slows down over a long time
+const friction = 0.15; // Increased friction for player balls
 const acc = 0.4;
 const vertAcc = 0.2;
 const gravity = 0.13; // Constant downward pull
 
 function movePlayers() {
+    const ball = document.getElementById('gameBall');
+    const container = document.querySelector('.container');
+    const containerRect = container.getBoundingClientRect();
+
     // PLAYER 1 - X Axis
     if (keys['a']) {
         if (speed1X > -maxSpeed) speed1X -= acc;
@@ -143,6 +153,17 @@ function movePlayers() {
     player2.style.left = (parseFloat(player2.style.left || 0) + speed2X) + 'px';
     player2.style.top = (parseFloat(player2.style.top || 0) + speed2Y) + 'px';
 
+    // Move ball
+    ball.style.left = (parseFloat(ball.style.left || 0) + ballSpeedX) + 'px';
+    ball.style.top = (parseFloat(ball.style.top || 0) + ballSpeedY) + 'px';
+
+    // Apply gravity to ball and cap speed
+    ballSpeedY += gravity;
+    if (ballSpeedY > maxSpeed) ballSpeedY = maxSpeed;
+    if (ballSpeedY < -maxSpeed) ballSpeedY = -maxSpeed;
+    if (ballSpeedX > maxSpeed) ballSpeedX = maxSpeed;
+    if (ballSpeedX < -maxSpeed) ballSpeedX = -maxSpeed;
+
     // BOUNCE LOGIC
     let bounce1 = checkWallCollision(player1, speed1X, speed1Y);
     speed1X = bounce1.x;
@@ -151,15 +172,18 @@ function movePlayers() {
     let bounce2 = checkWallCollision(player2, speed2X, speed2Y);
     speed2X = bounce2.x;
     speed2Y = bounce2.y;
+
+    let ballBounce = checkBallWallCollision(ball, ballSpeedX, ballSpeedY);
+    ballSpeedX = ballBounce.x;
+    ballSpeedY = ballBounce.y;
+
     function checkWallCollision(player, speedX, speedY) {
         const playerRect = player.getBoundingClientRect();
         const leftWall = document.getElementById('leftWall').getBoundingClientRect();
         const rightWall = document.getElementById('rightWall').getBoundingClientRect();
         const topWall = document.getElementById('topWall').getBoundingClientRect();
         const bottomWall = document.getElementById('bottomWall').getBoundingClientRect();
-        const container = document.querySelector('.container').getBoundingClientRect();
-        const originalSize = parseFloat(getComputedStyle(player).width);
-        const shrunkSize = originalSize * 0.8;
+        const shrunkSize = playerOriginalSize * 0.8;
 
         let bounce = { x: speedX, y: speedY };
 
@@ -168,7 +192,7 @@ function movePlayers() {
             bounce.x = Math.abs(bounce.x)*((Math.random()*0.4)+0.85); // bounce right
             player.style.width = shrunkSize + "px";
             setTimeout(() => {
-                player.style.width = originalSize + "px";
+                player.style.width = playerOriginalSize + "px";
             }, 50);
         }
 
@@ -177,26 +201,78 @@ function movePlayers() {
             bounce.x = -Math.abs(bounce.x)*((Math.random()*0.4)+0.85); // bounce left
             player.style.width = shrunkSize + "px";
             setTimeout(() => {
-                player.style.width = originalSize + "px";
+                player.style.width = playerOriginalSize + "px";
             }, 50);
         }
 
         // Top wall
         if (playerRect.top <= topWall.bottom) {
             bounce.y = Math.abs(bounce.y)*((Math.random()*0.4)+0.65); // bounce down
-            player.style.top += 1 + 'px';
+            player.style.top = topWall.bottom + 1 + 'px'; // Adjust position to prevent sticking
             player.style.height = shrunkSize + "px";
             setTimeout(() => {
-                player.style.height = originalSize + "px";
+                player.style.height = playerOriginalSize + "px";
             }, 50);
         }
 
         // Bottom wall
         if (playerRect.bottom >= bottomWall.top) {
-            bounce.y = -Math.abs(bounce.y)*((Math.random()*0.4)+0.85); // bounce up
+            bounce.y = -Math.abs(bounce.y)*((Math.random()*0.4)+0.65); // bounce up, reduced bounce height
+            player.style.top = bottomWall.top - playerRect.height - 1 + 'px'; // Adjust position to prevent sticking
             player.style.height = shrunkSize + "px";
             setTimeout(() => {
-                player.style.height = originalSize + "px";
+                player.style.height = playerOriginalSize + "px";
+            }, 50);
+        }
+
+        return bounce;
+    }
+
+    function checkBallWallCollision(ball, speedX, speedY) {
+        const ballRect = ball.getBoundingClientRect();
+        const leftWall = document.getElementById('leftWall').getBoundingClientRect();
+        const rightWall = document.getElementById('rightWall').getBoundingClientRect();
+        const topWall = document.getElementById('topWall').getBoundingClientRect();
+        const bottomWall = document.getElementById('bottomWall').getBoundingClientRect();
+        const shrunkSize = ballOriginalSize * 0.8;
+
+        let bounce = { x: speedX, y: speedY };
+
+        // Left wall
+        if (ballRect.left <= leftWall.right) {
+            bounce.x = Math.abs(bounce.x)*((Math.random()*0.4)+0.85); // bounce right
+            ball.style.width = shrunkSize + "px";
+            setTimeout(() => {
+                ball.style.width = ballOriginalSize + "px";
+            }, 50);
+        }
+
+        // Right wall
+        if (ballRect.right >= rightWall.left) {
+            bounce.x = -Math.abs(bounce.x)*((Math.random()*0.4)+0.85); // bounce left
+            ball.style.width = shrunkSize + "px";
+            setTimeout(() => {
+                ball.style.width = ballOriginalSize + "px";
+            }, 50);
+        }
+
+        // Top wall
+        if (ballRect.top <= topWall.bottom) {
+            bounce.y = Math.abs(bounce.y)*((Math.random()*0.4)+0.65); // bounce down
+            ball.style.top = topWall.bottom + 1 + 'px'; // Adjust position to prevent sticking
+            ball.style.height = shrunkSize + "px";
+            setTimeout(() => {
+                ball.style.height = ballOriginalSize + "px";
+            }, 50);
+        }
+
+        // Bottom wall
+        if (ballRect.bottom >= bottomWall.top) {
+            bounce.y = -Math.abs(bounce.y)*((Math.random()*0.4)+0.65); // bounce up, reduced bounce height
+            ball.style.top = bottomWall.top - ballRect.height - 1 + 'px'; // Adjust position to prevent sticking
+            ball.style.height = shrunkSize + "px";
+            setTimeout(() => {
+                ball.style.height = ballOriginalSize + "px";
             }, 50);
         }
 
@@ -205,8 +281,42 @@ function movePlayers() {
 
     handlePlayerCollisions(player1);
     handlePlayerCollisions(player2);
+    handleBallPlayerCollision(ball, player1);
+    handleBallPlayerCollision(ball, player2);
     updateBorderGradient;
     requestAnimationFrame(movePlayers);
+}
+
+function handleBallPlayerCollision(ball, player) {
+    if (isColliding(ball, player)) {
+        const ballRect = ball.getBoundingClientRect();
+        const playerRect = player.getBoundingClientRect();
+
+        // Calculate overlap
+        const overlapX = Math.max(0, Math.min(ballRect.right, playerRect.right) - Math.max(ballRect.left, playerRect.left));
+        const overlapY = Math.max(0, Math.min(ballRect.bottom, playerRect.bottom) - Math.max(ballRect.top, playerRect.top));
+
+        // Determine collision side and adjust ball position to prevent sticking
+        if (overlapX < overlapY) { // Horizontal collision
+            if (ballRect.left < playerRect.left) { // Ball hit player from left
+                ball.style.left = (playerRect.left - ballRect.width) + 'px';
+                ballSpeedX = -Math.abs(ballSpeedX) * ((Math.random() * 0.4) + 0.85);
+            } else { // Ball hit player from right
+                ball.style.left = playerRect.right + 'px';
+                ballSpeedX = Math.abs(ballSpeedX) * ((Math.random() * 0.4) + 0.85);
+            }
+        } else { // Vertical collision
+            if (ballRect.top < playerRect.top) { // Ball hit player from top
+                ball.style.top = (playerRect.top - ballRect.height) + 'px';
+                ballSpeedY = -Math.abs(ballSpeedY) * ((Math.random() * 0.4) + 0.85);
+            } else { // Ball hit player from bottom
+                ball.style.top = playerRect.bottom + 'px';
+                ballSpeedY = Math.abs(ballSpeedY) * ((Math.random() * 0.4) + 0.85);
+            }
+        }
+
+        // Removed retraction effect for yellow ball on player collision
+    }
 }
 
 
@@ -269,4 +379,3 @@ function handlePlayerCollisions(player) {
         player.style.left = (currentLeft - 5) + 'px';
     }
 }
-
