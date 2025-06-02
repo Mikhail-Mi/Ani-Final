@@ -90,7 +90,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
 
-const friction = 0.15; // Increased friction for player balls
+const friction = 0.1; // Increased friction for player balls
 const acc = 0.4;
 const vertAcc = 0.2;
 const gravity = 0.13; // Constant downward pull
@@ -183,7 +183,9 @@ function movePlayers() {
         const rightWall = document.getElementById('rightWall').getBoundingClientRect();
         const topWall = document.getElementById('topWall').getBoundingClientRect();
         const bottomWall = document.getElementById('bottomWall').getBoundingClientRect();
-        const shrunkSize = playerOriginalSize * 0.8;
+        const container = document.querySelector('.container').getBoundingClientRect();
+        const originalSize = parseFloat(getComputedStyle(player).width);
+        const shrunkSize = originalSize * 0.8;
 
         let bounce = { x: speedX, y: speedY };
 
@@ -192,7 +194,7 @@ function movePlayers() {
             bounce.x = Math.abs(bounce.x)*((Math.random()*0.4)+0.85); // bounce right
             player.style.width = shrunkSize + "px";
             setTimeout(() => {
-                player.style.width = playerOriginalSize + "px";
+                player.style.width = originalSize + "px";
             }, 50);
         }
 
@@ -201,27 +203,26 @@ function movePlayers() {
             bounce.x = -Math.abs(bounce.x)*((Math.random()*0.4)+0.85); // bounce left
             player.style.width = shrunkSize + "px";
             setTimeout(() => {
-                player.style.width = playerOriginalSize + "px";
+                player.style.width = originalSize + "px";
             }, 50);
         }
 
         // Top wall
         if (playerRect.top <= topWall.bottom) {
             bounce.y = Math.abs(bounce.y)*((Math.random()*0.4)+0.65); // bounce down
-            player.style.top = topWall.bottom + 1 + 'px'; // Adjust position to prevent sticking
+            player.style.top += 1 + 'px';
             player.style.height = shrunkSize + "px";
             setTimeout(() => {
-                player.style.height = playerOriginalSize + "px";
+                player.style.height = originalSize + "px";
             }, 50);
         }
 
         // Bottom wall
         if (playerRect.bottom >= bottomWall.top) {
-            bounce.y = -Math.abs(bounce.y)*((Math.random()*0.4)+0.65); // bounce up, reduced bounce height
-            player.style.top = bottomWall.top - playerRect.height - 1 + 'px'; // Adjust position to prevent sticking
+            bounce.y = -Math.abs(bounce.y)*((Math.random()*0.4)+0.85); // bounce up
             player.style.height = shrunkSize + "px";
             setTimeout(() => {
-                player.style.height = playerOriginalSize + "px";
+                player.style.height = originalSize + "px";
             }, 50);
         }
 
@@ -279,8 +280,7 @@ function movePlayers() {
         return bounce;
     }
 
-    handlePlayerCollisions(player1);
-    handlePlayerCollisions(player2);
+    handlePlayerCollisions(player1,player2, speed1X, speed1Y, speed2X, speed2Y);
     handleBallPlayerCollision(ball, player1);
     handleBallPlayerCollision(ball, player2);
     updateBorderGradient;
@@ -292,32 +292,36 @@ function handleBallPlayerCollision(ball, player) {
         const ballRect = ball.getBoundingClientRect();
         const playerRect = player.getBoundingClientRect();
 
-        // Calculate overlap
-        const overlapX = Math.max(0, Math.min(ballRect.right, playerRect.right) - Math.max(ballRect.left, playerRect.left));
-        const overlapY = Math.max(0, Math.min(ballRect.bottom, playerRect.bottom) - Math.max(ballRect.top, playerRect.top));
+        // Get center points
+        const ballCenterX = ballRect.left + ballRect.width / 2;
+        const ballCenterY = ballRect.top + ballRect.height / 2;
+        const playerCenterX = playerRect.left + playerRect.width / 2;
+        const playerCenterY = playerRect.top + playerRect.height / 2;
 
-        // Determine collision side and adjust ball position to prevent sticking
-        if (overlapX < overlapY) { // Horizontal collision
-            if (ballRect.left < playerRect.left) { // Ball hit player from left
-                ball.style.left = (playerRect.left - ballRect.width) + 'px';
-                ballSpeedX = -Math.abs(ballSpeedX) * ((Math.random() * 0.4) + 0.85);
-            } else { // Ball hit player from right
-                ball.style.left = playerRect.right + 'px';
-                ballSpeedX = Math.abs(ballSpeedX) * ((Math.random() * 0.4) + 0.85);
-            }
-        } else { // Vertical collision
-            if (ballRect.top < playerRect.top) { // Ball hit player from top
-                ball.style.top = (playerRect.top - ballRect.height) + 'px';
-                ballSpeedY = -Math.abs(ballSpeedY) * ((Math.random() * 0.4) + 0.85);
-            } else { // Ball hit player from bottom
-                ball.style.top = playerRect.bottom + 'px';
-                ballSpeedY = Math.abs(ballSpeedY) * ((Math.random() * 0.4) + 0.85);
-            }
-        }
+        // Vector from player to ball
+        let dx = ballCenterX - playerCenterX;
+        let dy = ballCenterY - playerCenterY;
 
-        // Removed retraction effect for yellow ball on player collision
+        // Normalize the vector
+        const magnitude = Math.sqrt(dx * dx + dy * dy) || 1; // Avoid division by 0
+        dx /= magnitude;
+        dy /= magnitude;
+
+        // Ball speed magnitude
+        const speed = Math.sqrt(ballSpeedX * ballSpeedX + ballSpeedY * ballSpeedY) || 1;
+
+        // Reflect the ball in the opposite direction (scaled slightly for variation)
+        const speedMultiplier = (Math.random() * 0.4) + 0.85;
+        ballSpeedX = dx * speed * speedMultiplier;
+        ballSpeedY = dy * speed * speedMultiplier;
+
+        // Reposition the ball just outside the player to prevent sticking
+        const overlapBuffer = 2;
+        ball.style.left = (playerCenterX + dx * (playerRect.width / 2 + ballRect.width / 2 + overlapBuffer) - ballRect.width / 2) + 'px';
+        ball.style.top = (playerCenterY + dy * (playerRect.height / 2 + ballRect.height / 2 + overlapBuffer) - ballRect.height / 2) + 'px';
     }
 }
+
 
 
 
@@ -348,34 +352,41 @@ function isColliding(a, b) {
     );
 }
 
-function handlePlayerCollisions(player) {
-    const walls = [
-        document.getElementById('leftWall'),
-        document.getElementById('rightWall'),
-        document.getElementById('topWall'),
-        document.getElementById('bottomWall')
-    ];
+function handlePlayerCollisions(playerA, playerB, speed1X, speed1Y, speed2X, speed2Y) {
+    if (isColliding(playerA, playerB)) {
+        const rectA = playerA.getBoundingClientRect();
+        const rectB = playerB.getBoundingClientRect();
 
-    const goalLeft = document.getElementById('goalLeft');
-    const goalRight = document.getElementById('goalRight');
+        // Get center points
+        const centerAX = rectA.left + rectA.width / 2;
+        const centerAY = rectA.top + rectA.height / 2;
+        const centerBX = rectB.left + rectB.width / 2;
+        const centerBY = rectB.top + rectB.height / 2;
 
-    const currentLeft = parseFloat(player.style.left || 0);
-    const currentTop = parseFloat(player.style.top || 0);
+        // Vector from B to A
+        let dx = centerAX - centerBX;
+        let dy = centerAY - centerBY;
 
-    walls.forEach(wall => {
-        if (isColliding(player, wall)) {
-            const wallRect = wall.getBoundingClientRect();
-            const playerRect = player.getBoundingClientRect();
+        // Normalize
+        const magnitude = Math.sqrt(dx * dx + dy * dy) || 1;
+        dx /= magnitude;
+        dy /= magnitude;
 
-            
-        }
-    });
+        const speed1 = Math.sqrt(speed1X * speed1X + speed1Y * speed1Y) || 1;
+        const speed2 = Math.sqrt(speed2X * speed2X + speed2Y * speed2Y) || 1;
 
-    // Block players from entering the goal areas
-    if (isColliding(player, goalLeft)) {
-        player.style.left = (currentLeft + 5) + 'px';
-    }
-    if (isColliding(player, goalRight)) {
-        player.style.left = (currentLeft - 5) + 'px';
+        const speedMultiplier = (Math.random() * 0.4) + 0.85;
+        speed1X = dx * speed1 * speedMultiplier;
+        speed1Y = dy * speed1 * speedMultiplier;
+
+        const speedMultiplier2 = (Math.random() * 0.4) + 0.85;
+        speed2X = dx * speed2 * speedMultiplier2;
+        speed2Y = dy * speed2 * speedMultiplier2;
+
+        // Move playerA slightly away from playerB to resolve overlap
+        const overlapBuffer = 5;
+        playerA.style.left = (centerBX + dx * (rectA.width / 2 + rectB.width / 2 + overlapBuffer) - rectA.width / 2) + 'px';
+        playerA.style.top = (centerBY + dy * (rectA.height / 2 + rectB.height / 2 + overlapBuffer) - rectA.height / 2) + 'px';
     }
 }
+
