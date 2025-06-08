@@ -1,0 +1,149 @@
+body {
+    background-color: #000;
+    color: #fff;
+    font-family: 'Press Start 2P', cursive; /* Retro pixel font */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    overflow: hidden; /* Hide scrollbars */
+}
+
+.container {
+    text-align: center;
+    border: 3px solid #ff00ff; /* Solid Pink Border */
+    padding: 30px;
+    position: relative;
+    width: 70%;
+    max-width: 550px; /* Slightly smaller to match image proportion */
+    background-color: #000; /* Ensure container background is black */
+    box-shadow: 
+        0 0 20px #00ffff, 
+        0 0 30px #00ffff, 
+        0 0 40px #00ffff, 
+        0 0 60px #00ffff, 
+        0 0 90px #00ffff, 
+        0 0 120px #00ffff;
+    animation: pulseGlow 2s infinite alternate;
+}
+
+@keyframes pulseGlow {
+    0%, 100% {
+        box-shadow: 
+            0 0 20px #00ffff, 
+            0 0 30px #00ffff, 
+            0 0 40px #00ffff, 
+            0 0 60px #00ffff, 
+            0 0 90px #00ffff, 
+            0 0 120px #00ffff;
+         border-color: #ff00ff;
+    }
+    50% {
+        box-shadow: 
+            0 0 25px #00ddff, 
+            0 0 35px #00ddff, 
+            0 0 50px #00ddff, 
+            0 0 70px #00ddff, 
+            0 0 100px #00ddff, 
+            0 0 140px #00ddff;
+        border-color: #ff33ff;
+    }
+}
+
+.icons-top {
+    position: absolute;
+    top: 10px;
+    width: calc(100% - 40px); /* Adjust based on container padding */
+    display: flex;
+    justify-content: space-between;
+    left: 20px; /* Match container padding */
+    right: 20px; /* Match container padding */
+}
+
+.icon-left, .icon-right {
+    font-size: 20px; /* Slightly smaller icons */
+    cursor: pointer;
+    color: #ff00ff; /* Pink icons */
+    text-shadow:
+        0 0 3px #ff00ff,
+        0 0 6px #ff00ff,
+        0 0 9px #00ffff; /* Subtle mixed glow */
+}
+
+header h1 {
+    font-size: 2.8em; /* Slightly adjusted size */
+    margin-bottom: 0;
+    color: #ff00ff; /* Bright pink */
+    text-shadow:
+        0 0 5px #fff,
+        0 0 10px #ff00ff,
+        0 0 15px #ff00ff,
+        0 0 20px #ff00ff,
+        0 0 25px #ff00ff;
+    animation: flickerText 1.5s infinite alternate;
+}
+
+@keyframes flickerText {
+    0%, 100% {
+        color: #ff00cc;
+        text-shadow:
+            0 0 5px #fff,
+            0 0 8px #ff00cc,
+            0 0 12px #ff00cc,
+            0 0 18px #ff00cc,
+            0 0 22px #ff00cc;
+    }
+    50% {
+        color: #f0f;
+        text-shadow:
+            0 0 6px #fff,
+            0 0 10px #f0f,
+            0 0 15px #f0f,
+            0 0 20px #f0f,
+            0 0 25px #f0f;
+    }
+}
+
+.version {
+    font-size: 1em; /* Smaller version text */
+    color: #00ffff; /* Bright cyan */
+    margin-top: 2px;
+    margin-bottom: 25px;
+    text-shadow:
+        0 0 3px #fff,
+        0 0 7px #00ffff,
+        0 0 10px #00ffff;
+}
+
+.menu {
+    display: flex; /* Ensure buttons are side-by-side */
+    justify-content: center; /* Center buttons */
+    gap: 15px; /* Space between buttons */
+}
+
+.menu-button {
+    background-color: #000; /* Black background */
+    border: 2px solid #ff00ff; /* Pink border */
+    color: #fff; /* White text */
+    padding: 10px 20px;
+    margin: 5px;
+    font-family: 'Press Start 2P', cursive;
+    font-size: 1.2em; /* Slightly smaller button text */
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: all 0.2s ease;
+    box-shadow: 
+        0 0 3px #ff00ff, 
+        0 0 6px #ff00ff;
+    position: relative; /* Keep for potential future effects if needed */
+}
+
+.menu-button:hover {
+    border-color: #ff80ff; /* Lighter pink border on hover */
+    color: #ff80ff; /* Lighter pink text on hover */
+    box-shadow: 
+        0 0 5px #ff80ff, 
+        0 0 10px #ff80ff, 
+        0 0 15px #ff00ff; /* More intense glow on hover */
+}
